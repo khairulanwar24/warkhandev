@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type CSSProperties, type FC } from 'react'
+import Shape, { GoogleDots, type ShapeKind } from './components/Shapes'
 import SkillIcon, { skillColor } from './components/SkillIcon'
 import {
   Arrow,
@@ -140,6 +141,11 @@ const PROJECT_ICONS: Record<string, IconCmp> = {
   bed: Bed,
 }
 
+/** Urutan warna logo Google: biru, merah, kuning, hijau. */
+const TONES = ['blue', 'red', 'yellow', 'green'] as const
+const tone = (i: number) => `tone-${TONES[i % TONES.length]}`
+const PROJ_SHAPES: ShapeKind[] = ['cookie12', 'sparkle', 'clover', 'cookie7', 'sunny', 'cookie4']
+
 function host(url: string) {
   return url.replace(/^https?:\/\//, '').replace(/\/$/, '')
 }
@@ -183,7 +189,10 @@ export default function App() {
       <header className="nav">
         <div className="wrap nav-in">
           <a href="#top" className="brand" aria-label={`${profile.name}, ${t(ui.backToTop)}`}>
-            <span className="avatar sm">{profile.initials}</span>
+            <span className="avatar sm">
+              <Shape kind="cookie12" />
+              <span>{profile.initials}</span>
+            </span>
             <span className="brand-name">{profile.name}</span>
           </a>
           <nav className={`nav-links ${menu ? 'open' : ''}`} aria-label={t(ui.mainNav)}>
@@ -218,6 +227,7 @@ export default function App() {
           <div className="wrap hero-grid">
             <div className="hero-copy">
               <p className="eyebrow">
+                <GoogleDots />
                 {profile.role} · {profile.roleAlt}
               </p>
               <h1>{profile.name}</h1>
@@ -243,44 +253,55 @@ export default function App() {
                 </a>
               </div>
             </div>
-            <aside className="hero-card">
-              <div className="hc-head">
-                <span className="avatar lg">{profile.initials}</span>
-                <div>
-                  <p className="hc-name">{profile.name}</p>
-                  <p className="hc-role">{profile.role}</p>
-                </div>
+            <div className="hero-side">
+              <div className="hero-shapes" aria-hidden="true">
+                <Shape kind="cookie12" className="hs hs-blue" />
+                <Shape kind="sparkle" className="hs hs-red" />
+                <Shape kind="half" className="hs hs-yellow" />
+                <Shape kind="clover" className="hs hs-green" />
               </div>
-              <ul className="hc-rows">
-                <li>
-                  <Building size={18} /> {profile.org}
-                </li>
-                <li>
-                  <Pin size={18} /> {profile.location}
-                </li>
-                <li>
-                  <Mail size={18} />
-                  <a href={`mailto:${profile.email}`}>{profile.email}</a>
-                </li>
-              </ul>
-              <p className="hc-label">{t(ui.focusAreas)}</p>
-              <ul className="chips">
-                {profile.focus.map((f) => (
-                  <li key={f.en}>{t(f)}</li>
-                ))}
-              </ul>
-              <p className="hc-status">
-                <span className="status-dot" /> {t(ui.available)}
-              </p>
-            </aside>
+              <aside className="hero-card">
+                <div className="hc-head">
+                  <span className="avatar lg">
+                    <Shape kind="cookie12" />
+                    <span>{profile.initials}</span>
+                  </span>
+                  <div>
+                    <p className="hc-name">{profile.name}</p>
+                    <p className="hc-role">{profile.role}</p>
+                  </div>
+                </div>
+                <ul className="hc-rows">
+                  <li>
+                    <Building size={18} /> {profile.org}
+                  </li>
+                  <li>
+                    <Pin size={18} /> {profile.location}
+                  </li>
+                  <li>
+                    <Mail size={18} />
+                    <a href={`mailto:${profile.email}`}>{profile.email}</a>
+                  </li>
+                </ul>
+                <p className="hc-label">{t(ui.focusAreas)}</p>
+                <ul className="chips">
+                  {profile.focus.map((f) => (
+                    <li key={f.en}>{t(f)}</li>
+                  ))}
+                </ul>
+                <p className="hc-status">
+                  <span className="status-dot" /> {t(ui.available)}
+                </p>
+              </aside>
+            </div>
           </div>
 
           <div className="wrap">
             <dl className="stats">
-              {stats.map((s) => {
+              {stats.map((s, i) => {
                 const Icon = STAT_ICONS[s.icon]
                 return (
-                  <div key={s.icon}>
+                  <div key={s.icon} className={tone(i)}>
                     <span className="stat-ico">
                       <Icon size={18} />
                     </span>
@@ -300,7 +321,7 @@ export default function App() {
         <section className="section" id="about">
           <div className="wrap two-col">
             <div className="reveal">
-              <p className="kicker">
+              <p className="kicker tone-blue">
                 <User size={14} /> {t(ui.aboutKicker)}
               </p>
               <h2>{t(ui.aboutTitle)}</h2>
@@ -316,7 +337,7 @@ export default function App() {
           <div className="wrap">
             <div ref={skillsRef} className={`skills ${skillsIn ? 'in' : ''}`}>
               <div className="skills-head">
-                <p className="kicker">
+                <p className="kicker tone-red">
                   <Wrench size={14} /> {t(ui.toolkit)}
                 </p>
                 <span className="skills-total">{t(ui.skillsTotal, { n: skills.reduce((n, g) => n + g.items.length, 0) })}</span>
@@ -325,7 +346,7 @@ export default function App() {
                 {skills.map((g, gi) => {
                   const Icon = GROUP_ICONS[g.key]
                   return (
-                    <div className={`sk-card sk-${g.key}`} key={g.key} style={{ '--g': gi } as CSSProperties}>
+                    <div className={`sk-card sk-${g.key} ${tone(gi)}`} key={g.key} style={{ '--g': gi } as CSSProperties}>
                       <div className="sk-card-head">
                         <span className="sk-group-ico">
                           <Icon size={15} />
@@ -355,7 +376,7 @@ export default function App() {
         <section className="section alt" id="work">
           <div className="wrap">
             <div className="section-head reveal">
-              <p className="kicker">
+              <p className="kicker tone-red">
                 <Grid size={14} /> {t(ui.workKicker)}
               </p>
               <h2>{t(ui.workTitle)}</h2>
@@ -367,7 +388,8 @@ export default function App() {
                 const primary = p.url ?? p.urls?.[0].href
                 const Icon = PROJECT_ICONS[p.icon]
                 return (
-                  <article className={`proj reveal ${p.wide ? 'wide' : ''}`} key={p.name} style={{ transitionDelay: `${(i % 2) * 80}ms` }}>
+                  <article className={`proj reveal ${tone(i)} ${p.wide ? 'wide' : ''}`} key={p.name} style={{ transitionDelay: `${(i % 2) * 80}ms` }}>
+                    <Shape kind={PROJ_SHAPES[i % PROJ_SHAPES.length]} className="proj-shape" />
                     <div className="proj-body">
                       <div className="proj-top">
                         <span className="proj-ico">
@@ -421,10 +443,10 @@ export default function App() {
 
             <h3 className="sub-head reveal">{t(ui.otherBuilds)}</h3>
             <ul className="others reveal">
-              {others.map((p) => {
+              {others.map((p, i) => {
                 const Icon = PROJECT_ICONS[p.icon]
                 return (
-                  <li key={p.name}>
+                  <li key={p.name} className={tone(i + 1)}>
                     <div className="o-main">
                       <b>
                         <span className="o-ico">
@@ -460,7 +482,7 @@ export default function App() {
         <section className="section" id="experience">
           <div className="wrap">
             <div className="section-head reveal">
-              <p className="kicker">
+              <p className="kicker tone-yellow">
                 <Briefcase size={14} /> {t(ui.expKicker)}
               </p>
               <h2>{t(ui.expTitle)}</h2>
@@ -513,7 +535,7 @@ export default function App() {
 
             <div className="edu-grid">
               <div className="edu reveal">
-                <p className="kicker">
+                <p className="kicker tone-blue">
                   <Cap size={14} /> {t(ui.education)}
                 </p>
                 <h3>{education.school}</h3>
@@ -529,6 +551,7 @@ export default function App() {
               </div>
               {awards.map((a) => (
                 <div className="edu award reveal" key={a.title.en}>
+                  <Shape kind="sparkle" className="award-shape" />
                   <p className="kicker">
                     <Trophy size={14} /> {t(ui.award)}
                   </p>
@@ -545,7 +568,13 @@ export default function App() {
         {/* ---------- kontak ---------- */}
         <section className="contact" id="contact">
           <div className="wrap reveal">
-            <p className="kicker">
+            <div className="contact-shapes" aria-hidden="true">
+              <Shape kind="sunny" className="cs cs-blue" />
+              <Shape kind="cookie4" className="cs cs-red" />
+              <Shape kind="sparkle" className="cs cs-yellow" />
+              <Shape kind="pill" className="cs cs-green" />
+            </div>
+            <p className="kicker tone-green">
               <Send size={14} /> {t(ui.contactKicker)}
             </p>
             <h2>
