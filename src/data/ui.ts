@@ -2,7 +2,7 @@ import type { Text } from './profile'
 
 /** Teks antarmuka (navigasi, judul bagian, tombol) dalam dua bahasa. */
 export const ui = {
-  title: { en: 'Muhammad Khairul Anwar — Software Developer', id: 'Muhammad Khairul Anwar — Software Developer' },
+  title: { en: 'Muhammad Khairul Anwar, S.Kom. — Software Developer', id: 'Muhammad Khairul Anwar, S.Kom. — Software Developer' },
   skip: { en: 'Skip to content', id: 'Langsung ke konten' },
   backToTop: { en: 'back to top', id: 'kembali ke atas' },
   mainNav: { en: 'Main', id: 'Utama' },

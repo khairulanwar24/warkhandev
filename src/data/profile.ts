@@ -8,7 +8,7 @@ export type Lang = 'en' | 'id'
 export type Text = Record<Lang, string>
 
 export const profile = {
-  name: 'Muhammad Khairul Anwar',
+  name: 'Muhammad Khairul Anwar, S.Kom.',
   short: 'Khairul',
   initials: 'KA',
   role: 'Software Developer',
@@ -45,7 +45,7 @@ export const profile = {
     { en: 'RESTful APIs', id: 'RESTful API' },
     { en: 'System integration', id: 'Integrasi sistem' },
   ],
-  email: 'khairul240102@gmail.com',
+  email: 'warkhacomp@gmail.com',
   links: {
     linkedin: 'https://www.linkedin.com/in/muhammad-khairul-anwar/',
     github: 'https://github.com/khairulanwar24',
@@ -146,7 +146,7 @@ export const experience: Experience[] = [
     type: { en: 'Bootcamp · Remote', id: 'Bootcamp · Jarak jauh' },
     company: 'Android Enthusiast Jakarta',
     companyUrl: 'https://www.instagram.com/hightech.id',
-    period: { en: 'Jan 2024 — Present', id: 'Jan 2024 — Sekarang' },
+    period: { en: 'Jan 2024 — 2025', id: 'Jan 2024 — 2025' },
     intro: {
       en: 'Professional bootcamp to grow from developer toward proficient software engineering.',
       id: 'Bootcamp profesional untuk berkembang dari developer menuju software engineer yang mumpuni.',
